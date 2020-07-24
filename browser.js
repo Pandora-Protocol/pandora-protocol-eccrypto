@@ -159,8 +159,8 @@ exports.sign = function(privateKey, msg) {
 
     const sign = ec.sign(msg, privateKey, {canonical: true});
     return Buffer.concat ([
-      sign.r.toArray(),
-      sign.s.toArray(),
+      Buffer.from( sign.r.toArray() ),
+      Buffer.from( sign.s.toArray() ),
     ]);
 };
 
