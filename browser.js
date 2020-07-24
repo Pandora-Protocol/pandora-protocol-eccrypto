@@ -78,13 +78,15 @@ function getAes(op) {
       } else {
         if (op === 'encrypt') {
           var cipher = nodeCrypto.createCipheriv('aes-256-cbc', key, iv);
-          cipher.update(data);
-          resolve(cipher.final());
+          var firstChunk = cipher.update(data);
+          var secondChunk = cipher.final();
+          resolve(Buffer.concat([ firstChunk, secondChunk ]));
         }
         else if (op === 'decrypt') {
           var decipher = nodeCrypto.createDecipheriv('aes-256-cbc', key, iv);
-          decipher.update(data);
-          resolve(decipher.final());
+          var firstChunk = decipher.update(data);
+          var secondChunk = decipher.final();
+          resolve(Buffer.concat([ firstChunk, secondChunk ]));
         }
       }
     });
@@ -228,6 +230,7 @@ exports.encrypt = function(publicKeyTo, msg, opts) {
   }).then(function(Px) {
     return sha512(Px);
   }).then(function(hash) {
+
     iv = opts.iv || randomBytes(16);
     var encryptionKey = hash.slice(0, 32);
     macKey = hash.slice(32);

@@ -1,6 +1,8 @@
 # pandora-protocol-eccrypto
 
 Fork from https://github.com/bitchan/eccrypto
+latest commit: v1.1.3
+               4fc0853915ba202fe70f3da11667168fb3b511d4
 
 Pandora Protocol uses a modified eccrypto namely:
 

@@ -233,6 +233,7 @@ exports.decrypt = function(privateKey, opts) {
     assert(privateKey.length === 32, "Bad private key");
     assert(isValidPrivateKey(privateKey), "Bad private key");
     var hash = sha512(Px);
+
     var encryptionKey = hash.slice(0, 32);
     var macKey = hash.slice(32);
     var dataToMac = Buffer.concat([
@@ -241,6 +242,7 @@ exports.decrypt = function(privateKey, opts) {
       opts[2]
     ]);
     var realMac = hmacSha256(macKey, dataToMac);
-    assert(equalConstTime(opts[3], realMac), "Bad MAC"); return aes256CbcDecrypt(opts[0], encryptionKey, opts[2]);
+    assert(equalConstTime(opts[3], realMac), "Bad MAC");
+    return aes256CbcDecrypt(opts[0], encryptionKey, opts[2]);
   });
 };
