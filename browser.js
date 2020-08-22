@@ -160,10 +160,14 @@ exports.sign = function(privateKey, msg) {
     assert(msg.length <= 32, "Message is too long");
 
     const sign = ec.sign(msg, privateKey, {canonical: true});
-    return Buffer.concat ([
-      Buffer.from( sign.r.toArray() ),
-      Buffer.from( sign.s.toArray() ),
-    ]);
+
+    const r = sign.r.toArray();
+    while (r.length < 32) r.unshift(0);
+
+    const s = sign.s.toArray();
+    while (s.length < 32) s.unshift(0);
+
+    return Buffer.concat ([ Buffer.from(r), Buffer.from(s) ]);
 };
 
 exports.verify = function(publicKey, msg, sig) {
